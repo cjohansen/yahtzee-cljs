@@ -1,0 +1,8 @@
+.dir-locals.el
+.cpcache
+.nrepl-port
+node_modules
+.cljs_node_repl
+out
+resources/public/js/
+target
