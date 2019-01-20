@@ -21,16 +21,18 @@
       (.preventDefault e)
       (apply trigger-action action))))
 
+(def cell-style {:margin "1vw 0"
+                 :text-align "center"})
+
 (defn score [{:keys [label value dice-suggestion score-suggestion action]}]
   (list [:div {:style {:background "#fff"}} [:p {:style {:margin "1vw 2vw"}} [:strong label]]]
-        [:div {:style {:background "#fff"}} [:p {:style {:margin "1vw 6vw"}} value]]
-        [:div {:style {:background "#fff"}}
-         [:p {:style {:margin "1vw 6vw"
-                      :opacity "0.5"}
-              :onClick (action-fn action)}
+        [:div {:style {:background "#fff"}} [:p {:style cell-style} value]]
+        [:div {:style {:background "#fff"
+                       :cursor "pointer"}
+               :onClick (action-fn action)}
+         [:p {:style (assoc cell-style :opacity "0.5")}
           score-suggestion]]
-        [:div {:style {:background "#fff"}}
-         ]))
+        [:div {:style {:background "#fff"}}]))
 
 (defcomponent die-box [props]
   [:div {:onClick (action-fn (:action props))
