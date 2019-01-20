@@ -1,9 +1,10 @@
-(ns yahtzee.core)
+(ns yahtzee.core
+  (:require [clojure.set :as set]))
 
 (defn- dice-result [dice]
   {:dice (or dice []) :score (reduce + 0 dice)})
 
-(defn ones [dice]
+(defn aces [dice]
   (dice-result (filter #{1} dice)))
 
 (defn twos [dice]
@@ -73,8 +74,10 @@
 (defn chance [dice]
   (dice-result (sort dice)))
 
+(def upper-section #{:aces :twos :threes :fours :fives :sixes})
+
 (defn upper-score [scores]
-  (->> [:ones :twos :threes :fours :fives :sixes]
+  (->> upper-section
        (select-keys scores)
        vals
        (map :score)
@@ -91,13 +94,8 @@
 (def upper-bonus-open (partial upper-bonus open-bonus-requirement))
 (def upper-bonus-forced (partial upper-bonus forced-bonus-requirement))
 
-(defn lower-bonus [requirement scores]
-  (if (<= requirement (upper-score scores))
-    50
-    0))
-
 (def score-sheet
-  {:ones ones
+  {:aces aces
    :twos twos
    :threes threes
    :fours fours
@@ -120,5 +118,59 @@
               [score (f dice)]))
        (into {})))
 
-(defn roll [n]
+(defn roll-dice [n]
   (map #(inc (rand-int 6)) (range n)))
+
+(defn create-game []
+  {:current-roll 0
+   :scores {}
+   :actions [[:roll]]
+   :total-score 0})
+
+(defn available-actions [{:keys [current-roll dice scores held]}]
+  (if (= (count score-sheet) (count scores))
+    [[:new-game]]
+    (cond-> []
+      (< current-roll 3) (conj [:roll])
+      (< current-roll 3) (concat (map-indexed #(if (contains? held %1)
+                                                 [:release %1]
+                                                 [:hold %1]) dice))
+      (< 0 current-roll) (concat (map (fn [[category result]] [:score category result])
+                                      (possible-scores dice scores))))))
+
+(defn update-actions [game]
+  (assoc game :actions (available-actions game)))
+
+(defn roll [game]
+  (-> game
+      (update :current-roll inc)
+      (assoc :dice (let [new-dice (roll-dice 5)]
+                     (map-indexed #(if (contains? (:held game) %1)
+                                     (nth (:dice game) %1)
+                                     (nth new-dice %1)) (range 5))))
+      update-actions))
+
+(defn hold [game die-idx]
+  (-> game
+      (update :held (comp set conj) die-idx)
+      update-actions))
+
+(defn release [game die-idx]
+  (-> game
+      (update :held set/difference #{die-idx})
+      update-actions))
+
+(defn update-upper-bonus [game]
+  (if (and (nil? (:upper-bonus game))
+           (= #{} (set/difference upper-section (set (keys (:scores game))))))
+    (assoc game :upper-bonus (upper-bonus-open (:scores game)))
+    game))
+
+(defn score [game category result]
+  (-> game
+      (assoc-in [:scores category] result)
+      (dissoc :held)
+      (assoc :current-roll 0)
+      (update :total-score + (:score result))
+      update-actions
+      update-upper-bonus))

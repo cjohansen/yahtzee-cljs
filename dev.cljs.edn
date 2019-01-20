@@ -1,7 +1,7 @@
-^{:watch-dirs ["src" "test" "devcards"]
+^{:watch-dirs ["src" "test" "devcards" "dev"]
   :extra-main-files {:tests {:main yahtzee.test-runner}
                      :devcards {:main yahtzee.cards}}}
-{:main "yahtzee.core"
+{:main yahtzee.dev
  :devcards true
  :optimizations :none
  :pretty-print true

@@ -14,10 +14,11 @@
 (def x 22)
 (def y 22)
 
-(defcomponent die [{:keys [color value]}]
+(defcomponent die [{:keys [color background value]}]
   (let [color (or color "#000")]
-    [:div {:style {:border (str "1vw solid " color)
-                   :border-radius "10%"}}
+    [:div {:style {:border (str "0.8vw solid " color)
+                   :border-radius "10%"
+                   :background (or background "#fff")}}
      [:div {:style {:position "relative"
                     :padding-bottom "100%"}}
       (when (#{1 3 5} value)
