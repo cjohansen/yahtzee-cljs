@@ -1,5 +1,5 @@
-(ns yahtzee.core-test
-  (:require [yahtzee.core :as sut]
+(ns yahtzee.game-test
+  (:require [yahtzee.game :as sut]
             #?(:clj [clojure.test :refer [deftest testing is]]
                :cljs [cljs.test :refer [deftest testing is]])))
 

@@ -1,5 +1,5 @@
 (ns yahtzee.actions
-  (:require [yahtzee.core :as yahtzee]))
+  (:require [yahtzee.game :as yahtzee]))
 
 (defn trigger-action [game action & args]
   (case action

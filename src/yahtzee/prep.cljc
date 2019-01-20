@@ -1,5 +1,5 @@
 (ns yahtzee.prep
-  (:require [yahtzee.core :as yahtzee]))
+  (:require [yahtzee.game :as yahtzee]))
 
 (def score-sheet
   [{:label "Aces" :path [:scores :aces :score]}

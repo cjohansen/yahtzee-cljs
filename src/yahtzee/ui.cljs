@@ -2,7 +2,7 @@
   (:require [dumdom.core :as dumdom :refer [defcomponent]]
             [yahtzee.components.button :refer [Button]]
             [yahtzee.components.die :refer [die]]
-            [yahtzee.core :as yahtzee]
+            [yahtzee.game :as yahtzee]
             [yahtzee.prep :as prep]))
 
 (defonce game (atom nil))

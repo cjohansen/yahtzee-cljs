@@ -1,4 +1,4 @@
-(ns yahtzee.core
+(ns yahtzee.game
   (:require [clojure.set :as set]))
 
 (defn- dice-result [dice]
