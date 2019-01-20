@@ -1,0 +1,4 @@
+{:main yahtzee.core
+ :optimizations :advanced
+ :source-map "yahtzee.js.map"
+ :output-to "yahtzee.js"}
