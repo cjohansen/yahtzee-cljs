@@ -45,23 +45,18 @@
                            :dice [1 2 3 4 5]}))))
 
   (is (= {:dice [{:value 1
-                  :background nil
                   :color nil
                   :action [:hold 0]}
                  {:value 2
-                  :background nil
                   :color nil
                   :action [:hold 1]}
                  {:value 3
-                  :background "#f9f3f6"
                   :color "#c06"
                   :action [:release 2]}
                  {:value 4
-                  :background nil
                   :color nil
                   :action [:hold 3]}
                  {:value 5
-                  :background "#f9f3f6"
                   :color "#c06"
                   :action [:release 4]}]
           :button {:action [:roll]

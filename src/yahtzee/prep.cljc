@@ -44,8 +44,7 @@
     (let [held? (contains? (:held game) idx)]
       {:value die
        :action (first (filter #(and (#{:hold :release} (first %)) (= idx (second %))) (:actions game)))
-       :background (when held? "#f9f3f6")
-       :color (when held? "#c06")})
+       :color (when held? "#f06")})
     {:value die
      :opacity "0.3"}))
 
