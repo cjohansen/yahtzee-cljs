@@ -9,9 +9,9 @@
                  {:value 3 :opacity "0.3"}
                  {:value 4 :opacity "0.3"}
                  {:value 5 :opacity "0.3"}]
-          :roll-button {:action [:roll]
-                        :text "Roll dice"
-                        :disabled? false}
+          :button {:action [:roll]
+                   :text "Roll dice"
+                   :disabled? false}
           :scores [{:label "Aces"}
                    {:label "Twos"}
                    {:label "Threes"}
@@ -64,9 +64,9 @@
                   :background "#f9f3f6"
                   :color "#c06"
                   :action [:release 4]}]
-          :roll-button {:action [:roll]
-                        :text "Roll dice"
-                        :disabled? false}
+          :button {:action [:roll]
+                   :text "Roll dice"
+                   :disabled? false}
           :scores [{:label "Aces"}
                    {:label "Twos"}
                    {:label "Threes"}
@@ -122,4 +122,14 @@
                         :dice [1 2 3 4 5]
                         :held #{2 4}
                         :actions [[:score :aces {:dice [1] :score 1}]]})
-             :scores))))
+             :scores)))
+
+  (is (= {:text "Play again!"
+          :action [:new-game]
+          :disabled? false}
+         (-> (sut/prep {:current-roll 1
+                        :total-score 0
+                        :dice [1 2 3 4 5]
+                        :held #{2 4}
+                        :actions [[:new-game]]})
+             :button))))

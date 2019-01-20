@@ -51,8 +51,8 @@
 
 (defn prep [game]
   {:dice (map-indexed #(prep-die game %1 %2) (or (:dice game) [1 2 3 4 5]))
-   :roll-button (let [action (first (filter #(= :roll (first %)) (:actions game)))]
-                  {:action action
-                   :text "Roll dice"
-                   :disabled? (nil? action)})
+   :button (let [action (first (filter #(#{:new-game :roll} (first %)) (:actions game)))]
+             {:action action
+              :text (if (= :new-game (first action)) "Play again!" "Roll dice")
+              :disabled? (nil? action)})
    :scores (map #(prep-score game %) score-sheet)})

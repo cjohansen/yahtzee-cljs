@@ -12,7 +12,8 @@
     :roll (apply swap! game yahtzee/roll args)
     :hold (apply swap! game yahtzee/hold args)
     :release (apply swap! game yahtzee/release args)
-    :score (apply swap! game yahtzee/score args)))
+    :score (apply swap! game yahtzee/score args)
+    :new-game (reset! game (yahtzee/create-game))))
 
 (defn action-fn [action]
   (when action
@@ -36,7 +37,7 @@
          :style {:opacity (:opacity props)}}
    [die props]])
 
-(defcomponent GameComponent [{:keys [dice roll-button scores]}]
+(defcomponent GameComponent [{:keys [dice button scores]}]
   [:div {:className "mod"}
    (when (seq dice)
      [:div {:className "mod"
@@ -44,9 +45,9 @@
                     :grid-template-columns "18% 18% 18% 18% 18%"
                     :justify-content "space-between"}}
       (map die-box dice)])
-   (when roll-button
+   (when button
      [:div {:className "mod"}
-      [Button (assoc roll-button :on-click (action-fn (:action roll-button)))]])
+      [Button (assoc button :on-click (action-fn (:action button)))]])
    [:div {:className "mod"
           :style {:display "grid"
                   :grid-gap "1px"
